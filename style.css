@@ -1302,4 +1302,33 @@ body {
     background: var(--text-muted);
 }
 
+/* --- 🔼 Expander Button for Option Groups --- */
+.flex-row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.expander-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.35rem;
+    transition: all 0.2s var(--transition-ease);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expander-btn:hover {
+    color: var(--color-accent-pink);
+    background-color: var(--color-secondary-hover);
+}
+
+.expander-btn.collapsed {
+    transform: rotate(180deg); /* 180度回転させて ▼ にする */
+}

@@ -89,12 +89,13 @@
                         </div>
 
                         <!-- ルール・ステージ抽選トグル -->
-                        <div class="checkbox-group">
+                        <div class="checkbox-group flex-row-between">
                             <label class="checkbox-container">
                                 <input type="checkbox" id="draw-rule">
                                 <span class="checkmark"></span>
                                 ルールをランダムで抽選する
                             </label>
+                            <button type="button" id="rule-options-toggle-btn" class="expander-btn hidden" aria-label="詳細設定を開閉">▲</button>
                         </div>
 
                         <!-- ルール詳細設定グループ (最初は非表示) -->
@@ -109,12 +110,13 @@
                             </div>
                         </div>
 
-                        <div class="checkbox-group">
+                        <div class="checkbox-group flex-row-between">
                             <label class="checkbox-container">
                                 <input type="checkbox" id="draw-stage">
                                 <span class="checkmark"></span>
                                 ステージをランダムで抽選する
                             </label>
+                            <button type="button" id="stage-options-toggle-btn" class="expander-btn hidden" aria-label="詳細設定を開閉">▲</button>
                         </div>
 
                         <!-- ステージ詳細設定グループ (最初は非表示) -->

@@ -963,6 +963,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 🎲 Advanced Options Initialization & Renderers ---
     const ruleOptionsGroup = document.getElementById('rule-options-group');
     const stageOptionsGroup = document.getElementById('stage-options-group');
+    const ruleOptionsToggleBtn = document.getElementById('rule-options-toggle-btn');
+    const stageOptionsToggleBtn = document.getElementById('stage-options-toggle-btn');
     const ruleSelectListContainer = document.getElementById('rule-select-list');
     const stageSelectListContainer = document.getElementById('stage-select-list');
 
@@ -970,17 +972,34 @@ document.addEventListener('DOMContentLoaded', () => {
     drawRuleCheckbox.addEventListener('change', () => {
         if (drawRuleCheckbox.checked) {
             ruleOptionsGroup.classList.remove('hidden');
+            ruleOptionsToggleBtn.classList.remove('hidden');
+            ruleOptionsToggleBtn.classList.remove('collapsed');
         } else {
             ruleOptionsGroup.classList.add('hidden');
+            ruleOptionsToggleBtn.classList.add('hidden');
         }
     });
 
     drawStageCheckbox.addEventListener('change', () => {
         if (drawStageCheckbox.checked) {
             stageOptionsGroup.classList.remove('hidden');
+            stageOptionsToggleBtn.classList.remove('hidden');
+            stageOptionsToggleBtn.classList.remove('collapsed');
         } else {
             stageOptionsGroup.classList.add('hidden');
+            stageOptionsToggleBtn.classList.add('hidden');
         }
+    });
+
+    // エキスパンダーボタンによる詳細の開閉制御
+    ruleOptionsToggleBtn.addEventListener('click', () => {
+        ruleOptionsGroup.classList.toggle('hidden');
+        ruleOptionsToggleBtn.classList.toggle('collapsed');
+    });
+
+    stageOptionsToggleBtn.addEventListener('click', () => {
+        stageOptionsGroup.classList.toggle('hidden');
+        stageOptionsToggleBtn.classList.toggle('collapsed');
     });
 
     // 個別ルール除外チェックボックスのレンダリング
