@@ -440,13 +440,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const weaponProbability = parseFloat(russianWeaponProbabilitySelect.value); // 全体の指定ブキ確率を取得
         const ruleProbability = parseFloat(russianRuleProbabilitySelect.value); // ルール指定確率を取得
 
+        // ロシアンブキの当選者を事前に決定する（最大1名）
+        let russianTargetIndex = -1;
+        if (isRussianWeaponMode && players.length > 1 && Math.random() < weaponProbability) {
+            russianTargetIndex = Math.floor(Math.random() * players.length);
+        }
+
         for (let i = 0; i < players.length; i++) {
             const player = players[i];
             let weapon = selectedWeapons[i];
             let isRussianWeapon = false;
 
-            // ブキロシアンルーレットモードかつ、プレイヤーが複数存在する場合に確率で指定に
-            if (isRussianWeaponMode && players.length > 1 && Math.random() < weaponProbability) {
+            // 当選したプレイヤーのみ指定ブキにするでし！
+            if (i === russianTargetIndex) {
                 // 自分以外のプレイヤーからランダムに1人選ぶ
                 const candidates = players.filter(p => p !== player);
                 const nominator = candidates[Math.floor(Math.random() * candidates.length)];
@@ -563,19 +569,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 4. ブキの抽選確率
         if (!isUnifiedSpecialRule && weaponList.length > 0) {
-            const weaponProb = parseFloat(russianWeaponProbabilitySelect.value); // 全体の指定ブキ確率
+            const weaponProb = parseFloat(russianWeaponProbabilitySelect.value); // ロシアン発生確率
             const playerCount = playerAssignments.length;
             const wPoolSize = weaponList.length;
 
-            playerAssignments.forEach((assign) => {
-                if (assign.isRussian) {
-                    // ロシアン指定ブキ：指定確率 × (1 / (人数-1))
-                    p *= weaponProb * (1.0 / (playerCount - 1));
-                } else {
-                    // 通常ブキ：(1 - 指定確率) × (1 / ブキプール総数)
-                    p *= (1.0 - weaponProb) * (1.0 / wPoolSize);
-                }
-            });
+            const hasRussian = playerAssignments.some(assign => assign.isRussian);
+
+            if (hasRussian) {
+                // ロシアンが1名発生した場合の確率：
+                // ロシアン確率 × (1 / 人数 [対象者選定]) × (1 / (人数-1) [指定役選定])
+                p *= weaponProb * (1.0 / playerCount) * (1.0 / (playerCount - 1));
+                // 残りの通常ブキ (人数 - 1) 個の確率
+                p *= Math.pow(1.0 / wPoolSize, playerCount - 1);
+            } else {
+                // ロシアンが発生しなかった場合の確率：
+                // (1 - ロシアン確率) × (1 / ブキプール総数)^人数
+                p *= (1.0 - weaponProb) * Math.pow(1.0 / wPoolSize, playerCount);
+            }
 
             // バッファ武器の確率
             bufferWeapons.forEach(() => {
