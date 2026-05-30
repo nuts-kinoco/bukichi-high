@@ -1262,4 +1262,44 @@ body {
     filter: brightness(1.1);
 }
 
+/* --- 🎲 Inner Checkbox Lists for Advanced Options --- */
+.inner-checkbox-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    padding: 0.6rem;
+    background: var(--bg-input);
+    border-radius: 0.6rem;
+    border: 1px solid var(--border-card);
+}
+
+.stage-scroll-container {
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 0.6rem;
+    background: var(--bg-input);
+    border-radius: 0.6rem;
+    border: 1px solid var(--border-card);
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Custom slim scrollbar for stage container */
+.stage-scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+.stage-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.stage-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--border-card);
+    border-radius: 3px;
+}
+.stage-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
 

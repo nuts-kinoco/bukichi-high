@@ -97,6 +97,22 @@
                             </label>
                         </div>
 
+                        <!-- ルール詳細設定グループ (最初は非表示) -->
+                        <div id="rule-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
+                            <div class="checkbox-group">
+                                <label class="checkbox-container text-accent">
+                                    <input type="checkbox" id="rule-lost-toggle">
+                                    <span class="checkmark checkmark-accent"></span>
+                                    ルールロスト機能
+                                    <span class="help-icon" data-tooltip="1度プレイしたルールを抽選から外すでし！全種類ループしたら自動ですべてのルールが抽選対象にリセットされます。">❓</span>
+                                </label>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">抽選するルール（チェックを外したルールは除外されるでし）:</div>
+                            <div class="inner-checkbox-list" id="rule-select-list">
+                                <!-- JSで動的に並びます -->
+                            </div>
+                        </div>
+
                         <div class="checkbox-group">
                             <label class="checkbox-container">
                                 <input type="checkbox" id="draw-stage">
@@ -105,13 +121,29 @@
                             </label>
                         </div>
 
+                        <!-- ステージ詳細設定グループ (最初は非表示) -->
+                        <div id="stage-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
+                            <div class="checkbox-group">
+                                <label class="checkbox-container text-accent">
+                                    <input type="checkbox" id="stage-lost-toggle">
+                                    <span class="checkmark checkmark-accent"></span>
+                                    ステージロスト機能
+                                    <span class="help-icon" data-tooltip="1度プレイしたステージを抽選から外すでし！全種類ループしたら自動ですべてのステージが抽選対象にリセットされます。">❓</span>
+                                </label>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">抽選するステージ（チェックを外したステージは除外されるでし）:</div>
+                            <div class="stage-scroll-container" id="stage-select-list">
+                                <!-- JSで動的に並びます -->
+                            </div>
+                        </div>
+
                         <!-- ブキロシアンルーレットモード -->
                         <div class="checkbox-group">
                             <label class="checkbox-container text-danger">
                                 <input type="checkbox" id="russian-weapon-roulette">
                                 <span class="checkmark checkmark-danger"></span>
                                 ブキロシアンルーレット
-                                <span class="help-icon" data-tooltip="設定した確率で、自分のブキが他のプレイヤーからランダムに指定されるでし！誰が選んだブキを握るか分からないスリリングなモードでし！">❓</span>
+                                <span class="help-icon" data-tooltip="設定した確率で、参加プレイヤーの中からランダムで最大1名が選ばれ、他の仲間からブキを指定（または一番使っていないブキを指示）されるスリリングなモードでし！">❓</span>
                             </label>
                         </div>
 

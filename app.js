@@ -49,6 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeSpecialRules = []; // 抽選に使用するアクティブな特殊ルールリスト
     let disabledSpecialRules = []; // 無効化された特殊ルールのリスト
     
+    // 🔄 ロスト（一度プレイした履歴）機能用状態
+    let playedRules = [];
+    let playedStages = [];
+    
+    // ⚙️ 個別除外されたルール・ステージのリスト
+    let excludedRules = [];
+    let excludedStages = [];
+    
     // スプラトゥーン3のステージリスト（全24ステージ）
     const stageList = [
         'ユノハナ大渓谷', 'ゴンズイ地区', 'ヤガラ市場', 'マテガイ放水路',
@@ -488,16 +496,59 @@ document.addEventListener('DOMContentLoaded', () => {
         let drawnSpecialRule = '';
 
         if (drawRuleCheckbox.checked) {
+            // 除外設定を考慮した利用可能なベースルールを作成でし！
+            let availableRules = ruleList.filter(rule => !excludedRules.includes(rule));
+            if (availableRules.length === 0) {
+                availableRules = [...ruleList]; // 万が一すべて除外されていた場合のセーフティフォールバック
+            }
+
             // ルールロシアンルーレットモードかつ、プレイヤーが1人以上存在する場合に確率で指定ルールに
             if (isRussianRuleMode && players.length > 0 && Math.random() < ruleProbability) {
                 const nominator = players[Math.floor(Math.random() * players.length)];
                 drawnRule = `${nominator}さんが指定してください`;
             } else {
-                drawnRule = ruleList[Math.floor(Math.random() * ruleList.length)];
+                // 通常抽選 ＆ ルールロスト機能の適用
+                const isRuleLostEnabled = document.getElementById('rule-lost-toggle').checked;
+                if (isRuleLostEnabled) {
+                    let unplayedRules = availableRules.filter(r => !playedRules.includes(r));
+                    
+                    // 全種類ループしたら、履歴を自動リセットして再度ループ開始するでし！
+                    if (unplayedRules.length === 0) {
+                        playedRules = [];
+                        unplayedRules = availableRules;
+                    }
+                    
+                    drawnRule = unplayedRules[Math.floor(Math.random() * unplayedRules.length)];
+                    playedRules.push(drawnRule);
+                } else {
+                    drawnRule = availableRules[Math.floor(Math.random() * availableRules.length)];
+                }
             }
         }
+        
         if (drawStageCheckbox.checked) {
-            drawnStage = stageList[Math.floor(Math.random() * stageList.length)];
+            // 除外設定を考慮した利用可能なベースステージを作成でし！
+            let availableStages = stageList.filter(stage => !excludedStages.includes(stage));
+            if (availableStages.length === 0) {
+                availableStages = [...stageList]; // セーフティフォールバック
+            }
+
+            // 通常抽選 ＆ ステージロスト機能の適用
+            const isStageLostEnabled = document.getElementById('stage-lost-toggle').checked;
+            if (isStageLostEnabled) {
+                let unplayedStages = availableStages.filter(s => !playedStages.includes(s));
+                
+                // 全種類ループしたら、履歴を自動リセットして再度ループ開始するでし！
+                if (unplayedStages.length === 0) {
+                    playedStages = [];
+                    unplayedStages = availableStages;
+                }
+                
+                drawnStage = unplayedStages[Math.floor(Math.random() * unplayedStages.length)];
+                playedStages.push(drawnStage);
+            } else {
+                drawnStage = availableStages[Math.floor(Math.random() * availableStages.length)];
+            }
         }
 
         // 5.1 特殊ルールのランダム抽選 (プランB: 無効化されたものを除外したリストから確率で抽選します)
@@ -919,10 +970,107 @@ document.addEventListener('DOMContentLoaded', () => {
     rollBtn.addEventListener('click', rollRoulette);
     rollAgainBtn.addEventListener('click', rollRoulette);
 
+    // --- 🎲 Advanced Options Initialization & Renderers ---
+    const ruleOptionsGroup = document.getElementById('rule-options-group');
+    const stageOptionsGroup = document.getElementById('stage-options-group');
+    const ruleLostToggle = document.getElementById('rule-lost-toggle');
+    const stageLostToggle = document.getElementById('stage-lost-toggle');
+    const ruleSelectListContainer = document.getElementById('rule-select-list');
+    const stageSelectListContainer = document.getElementById('stage-select-list');
+
+    // 展開・非表示トグル処理の登録
+    drawRuleCheckbox.addEventListener('change', () => {
+        if (drawRuleCheckbox.checked) {
+            ruleOptionsGroup.classList.remove('hidden');
+        } else {
+            ruleOptionsGroup.classList.add('hidden');
+        }
+    });
+
+    drawStageCheckbox.addEventListener('change', () => {
+        if (drawStageCheckbox.checked) {
+            stageOptionsGroup.classList.remove('hidden');
+        } else {
+            stageOptionsGroup.classList.add('hidden');
+        }
+    });
+
+    // 個別ルール除外チェックボックスのレンダリング
+    const renderRuleExclusionCheckboxes = () => {
+        ruleSelectListContainer.innerHTML = '';
+        ruleList.forEach(rule => {
+            const label = document.createElement('label');
+            label.className = 'checkbox-container';
+            label.style.fontSize = '0.75rem';
+            label.style.fontWeight = '600';
+            
+            const isExcluded = excludedRules.includes(rule);
+            label.innerHTML = `
+                <input type="checkbox" class="rule-exclude-check" data-rule="${escapeHTML(rule)}" ${isExcluded ? '' : 'checked'}>
+                <span class="checkmark" style="width: 0.9rem; height: 0.9rem; border-radius: 0.2rem;"></span>
+                <span>${escapeHTML(rule)}</span>
+            `;
+            
+            label.querySelector('.rule-exclude-check').addEventListener('change', (e) => {
+                const rName = e.target.getAttribute('data-rule');
+                if (e.target.checked) {
+                    excludedRules = excludedRules.filter(r => r !== rName);
+                } else {
+                    if (!excludedRules.includes(rName)) {
+                        excludedRules.push(rName);
+                    }
+                }
+                playedRules = [];
+            });
+            ruleSelectListContainer.appendChild(label);
+        });
+    };
+
+    // 個別ステージ除外チェックボックスのレンダリング
+    const renderStageExclusionCheckboxes = () => {
+        stageSelectListContainer.innerHTML = '';
+        stageList.forEach(stage => {
+            const label = document.createElement('label');
+            label.className = 'checkbox-container';
+            label.style.fontSize = '0.75rem';
+            label.style.fontWeight = '600';
+            
+            const isExcluded = excludedStages.includes(stage);
+            label.innerHTML = `
+                <input type="checkbox" class="stage-exclude-check" data-stage="${escapeHTML(stage)}" ${isExcluded ? '' : 'checked'}>
+                <span class="checkmark" style="width: 0.9rem; height: 0.9rem; border-radius: 0.2rem;"></span>
+                <span>${escapeHTML(stage)}</span>
+            `;
+            
+            label.querySelector('.stage-exclude-check').addEventListener('change', (e) => {
+                const sName = e.target.getAttribute('data-stage');
+                if (e.target.checked) {
+                    excludedStages = excludedStages.filter(s => s !== sName);
+                } else {
+                    if (!excludedStages.includes(sName)) {
+                        excludedStages.push(sName);
+                    }
+                }
+                playedStages = [];
+            });
+            stageSelectListContainer.appendChild(label);
+        });
+    };
+
+    // ロストスイッチの変更監視
+    ruleLostToggle.addEventListener('change', () => {
+        playedRules = [];
+    });
+    stageLostToggle.addEventListener('change', () => {
+        playedStages = [];
+    });
+
     // --- 🏁 9. Initialization ---
     initTheme();
     setupInitialPlayers();
     loadWeaponsCSV();
     loadSpecialRules();
     initDiscordWebhook();
+    renderRuleExclusionCheckboxes();
+    renderStageExclusionCheckboxes();
 });
