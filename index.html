@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブキチハイ！ | スプラトゥーン抽選ツール</title>
+    <meta name="description" content="スプラトゥーンのプレイヤーブキ、ルール、ステージをランダムに抽選する高機能抽選ツール「ブキチハイ！」です。バッファ機能、特殊ルール抽選、ロシアンルーレット、簡単コピペ機能付き。">
+    <!-- Google Fonts: Outfit, Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-group">
+                <span class="logo-badge">🦑 BUKICHI HIGH!</span>
+                <div class="title-wrap">
+                    <h1 class="app-title"><a href="./" class="logo-link">ブキチハイ！</a></h1>
+                    <a href="https://kotobattler.vercel.app/" class="sibling-link" target="_blank" rel="noopener noreferrer">
+                        スプラ会話デッキ: コトバトラー
+                    </a>
+                </div>
+            </div>
+            <!-- テーマ切り替えトグル（コトバトラー風） -->
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="テーマを切り替える">
+                <!-- 太陽アイコン（ライトモード用） -->
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <!-- 月アイコン（ダークモード用） -->
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="app-content">
+        <div class="grid-container">
+            <!-- 左カラム：プレイヤー設定とオプション -->
+            <section class="settings-section">
+                <!-- 🎮 プレイヤー設定カード (デフォルトで開いた状態) -->
+                <details class="settings-card card" open id="player-settings-details">
+                    <summary class="settings-summary">
+                        <h2 class="section-title" style="margin-bottom: 0;">🎮 プレイヤー設定</h2>
+                        <span class="toggle-icon">▼</span>
+                    </summary>
+                    <div class="settings-content">
+                        <div class="player-list-header">
+                            <span>プレイヤー名（空欄は抽選から除外されるでし！）</span>
+                        </div>
+                        
+                        <div id="player-list" class="player-list">
+                            <!-- JSで初期10行を自動生成 -->
+                        </div>
+                        
+                        <button id="add-player-btn" class="btn btn-secondary">
+                            <span class="btn-icon">➕</span> プレイヤーを追加
+                        </button>
+                    </div>
+                </details>
+
+                <!-- ⚙️ オプション設定カード (デフォルトで閉じた状態) -->
+                <details class="settings-card card" id="option-settings-details">
+                    <summary class="settings-summary">
+                        <h2 class="section-title" style="margin-bottom: 0;">⚙️ オプション設定</h2>
+                        <span class="toggle-icon">▼</span>
+                    </summary>
+                    <div class="settings-content">
+                        <!-- 予備ブキ設定（デフォルト0） -->
+                        <div class="option-group">
+                            <label for="buffer-count" class="option-label">
+                                <span>🎁 予備ブキの数</span>
+                                <span id="buffer-val" class="badge">0</span>
+                            </label>
+                            <input type="range" id="buffer-count" min="0" max="10" value="0" class="slider">
+                            <p class="option-desc">武器を持っていない人が出た際の予備ブキ枠です。</p>
+                        </div>
+
+                        <!-- ルール・ステージ抽選トグル -->
+                        <div class="checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="draw-rule">
+                                <span class="checkmark"></span>
+                                ルールをランダムで抽選する
+                            </label>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="draw-stage">
+                                <span class="checkmark"></span>
+                                ステージをランダムで抽選する
+                            </label>
+                        </div>
+
+                        <!-- ブキロシアンルーレットモード -->
+                        <div class="checkbox-group">
+                            <label class="checkbox-container text-danger">
+                                <input type="checkbox" id="russian-weapon-roulette">
+                                <span class="checkmark checkmark-danger"></span>
+                                ブキロシアンルーレット
+                                <span class="help-icon" data-tooltip="設定した確率で、自分のブキが他のプレイヤーからランダムに指定されるでし！誰が選んだブキを握るか分からないスリリングなモードでし！">❓</span>
+                            </label>
+                        </div>
+
+                        <!-- ブキ指定の確率設定 (最初は非表示) -->
+                        <div id="russian-weapon-probability-group" class="option-group hidden">
+                            <label for="russian-weapon-probability" class="option-label">
+                                <span>指定ブキの発生確率</span>
+                            </label>
+                            <select id="russian-weapon-probability" class="select-input">
+                                <option value="0.1">10%</option>
+                                <option value="0.2">20%</option>
+                                <option value="0.3" selected>30%</option>
+                                <option value="0.4">40%</option>
+                                <option value="0.5">50%</option>
+                                <option value="0.6">60%</option>
+                                <option value="0.7">70%</option>
+                                <option value="0.8">80%</option>
+                                <option value="0.9">90%</option>
+                                <option value="1.0">100%</option>
+                            </select>
+                        </div>
+
+                        <!-- ルールロシアンルーレットモード -->
+                        <div class="checkbox-group">
+                            <label class="checkbox-container text-danger">
+                                <input type="checkbox" id="russian-rule-roulette">
+                                <span class="checkmark checkmark-danger"></span>
+                                ルールロシアンルーレット
+                                <span class="help-icon" data-tooltip="設定した確率で、対戦ルールがいずれかのプレイヤーによる指定になるでし！">❓</span>
+                            </label>
+                        </div>
+
+                        <!-- ルール指定の確率設定 (最初は非表示) -->
+                        <div id="russian-rule-probability-group" class="option-group hidden">
+                            <label for="russian-rule-probability" class="option-label">
+                                <span>指定ルールの発生確率</span>
+                            </label>
+                            <select id="russian-rule-probability" class="select-input">
+                                <option value="0.1">10%</option>
+                                <option value="0.2">20%</option>
+                                <option value="0.3" selected>30%</option>
+                                <option value="0.4">40%</option>
+                                <option value="0.5">50%</option>
+                                <option value="0.6">60%</option>
+                                <option value="0.7">70%</option>
+                                <option value="0.8">80%</option>
+                                <option value="0.9">90%</option>
+                                <option value="1.0">100%</option>
+                            </select>
+                        </div>
+
+                        <!-- 特殊ルール抽選チェックボックス -->
+                        <div class="checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="draw-special-rule">
+                                <span class="checkmark"></span>
+                                特殊ルールをランダムで抽選する
+                            </label>
+                        </div>
+
+                        <!-- 特殊ルール発生の確率設定 (最初は非表示) -->
+                        <div id="special-rule-probability-group" class="option-group hidden">
+                            <label for="special-rule-probability" class="option-label">
+                                <span>特殊ルールの発生確率</span>
+                            </label>
+                            <select id="special-rule-probability" class="select-input">
+                                <option value="0.1">10%</option>
+                                <option value="0.2">20%</option>
+                                <option value="0.3" selected>30%</option>
+                                <option value="0.4">40%</option>
+                                <option value="0.5">50%</option>
+                                <option value="0.6">60%</option>
+                                <option value="0.7">70%</option>
+                                <option value="0.8">80%</option>
+                                <option value="0.9">90%</option>
+                                <option value="1.0">100%</option>
+                            </select>
+                        </div>
+
+                        <!-- 特殊ルールの管理 (折りたたみ式) -->
+                        <details class="special-rules-manager" style="margin-top: 0.5rem; margin-bottom: 1.2rem;">
+                            <summary class="manager-summary">⚙️ 特殊ルールの編集・追加</summary>
+                            <div class="manager-content">
+                                <div class="add-rule-form">
+                                    <input type="text" id="new-rule-input" class="input-player" placeholder="新しい特殊ルールを入力">
+                                    <button type="button" id="add-rule-btn" class="btn btn-secondary">➕</button>
+                                </div>
+                                <ul id="special-rules-list" class="rules-list">
+                                    <!-- JSで動的に並びます -->
+                                </ul>
+                            </div>
+                        </details>
+
+                        <!-- Discord連携設定 -->
+                        <div class="option-group" style="margin-top: 1.2rem; border-top: 1px dashed var(--border-card); padding-top: 1.2rem;">
+                            <label for="discord-webhook-url" class="option-label">
+                                <span>💬 Discord Webhook URL</span>
+                            </label>
+                            <input type="password" id="discord-webhook-url" class="input-player" placeholder="https://discord.com/api/webhooks/..." style="font-family: monospace; font-size: 0.8rem;">
+                            <p class="option-desc">設定すると、抽選結果を直接Discordの指定チャンネルに送信できるようになります。（誤爆防止のため、URLは保存されないでし！）</p>
+                        </div>
+                    </div>
+                </details>
+
+            </section>
+
+            <!-- 右カラム：結果表示 -->
+            <section class="results-section">
+                <!-- 初期状態：未抽選のメッセージ（ブキチ語尾「準備はいいでしか？」） -->
+                <div id="results-placeholder" class="card empty-card" style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center; justify-content: center; padding: 4rem 2rem;">
+                    <div class="empty-icon" style="margin-bottom: 0;">🎲</div>
+                    <h3 style="margin-bottom: 0; font-size: 1.5rem;">準備はいいでしか？</h3>
+                    <p style="margin-top: 0; margin-bottom: 0; max-width: 320px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">プレイヤー名を入力し、オプションを設定して「ルーレットを回す！」ボタンを押してほしいでし。</p>
+                    
+                    <!-- 抽選ボタンをここに移動させ、スクロール不要でいつでも回せる最高の動線にしますわ！ -->
+                    <button id="roll-btn" class="btn btn-primary btn-block" style="max-width: 320px; font-size: 1.1rem; padding: 0.85rem 1.5rem; margin-top: 0.5rem;">
+                        🔫 ルーレットを回す！
+                    </button>
+                </div>
+
+                <!-- 結果カード（最初は非表示） -->
+                <div id="results-container" class="results-container hidden">
+                    <!-- コピペテキストエリア（最上部！） -->
+                    <div class="card copy-text-card">
+                        <h3 class="card-subtitle">📋 チャット貼り付け用テキスト</h3>
+                        <textarea id="copy-textarea" class="copy-textarea" readonly rows="8" placeholder="ここにコピペ用テキストが生成されます"></textarea>
+                        <button id="copy-btn" class="btn btn-accent btn-block">
+                            📋 結果をコピーする
+                        </button>
+                        <button id="roll-again-btn" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">
+                            🔫 もう一度ルーレットを回すでし！
+                        </button>
+                        <button id="discord-send-btn" class="btn btn-discord btn-block" style="margin-top: 0.5rem;">
+                            💬 Discordに送信するでし！
+                        </button>
+                    </div>
+
+                    <!-- ステージ＆ルール -->
+                    <div id="match-info-card" class="card match-info-card">
+                        <div class="match-info-grid">
+                            <div class="match-info-item rule-item">
+                                <span class="label">RULE</span>
+                                <span id="result-rule" class="value">-</span>
+                            </div>
+                            <div class="match-info-item stage-item">
+                                <span class="label">STAGE</span>
+                                <span id="result-stage" class="value">-</span>
+                            </div>
+                        </div>
+                        <!-- 特殊ルール表示枠 -->
+                        <div id="special-rule-info" class="special-rule-info hidden">
+                            <span class="label">SPECIAL RULE</span>
+                            <span id="result-special-rule" class="value">-</span>
+                        </div>
+                        <!-- 確率表示エリア（ご主人様公認ハイブリッド設計！） -->
+                        <div id="result-probability-area" class="result-probability-area">
+                            <span class="label">📍 この結果の選択確率</span>
+                            <div class="prob-value-wrap">
+                                <span id="result-probability-value" class="value prob-val">-</span>
+                            </div>
+                            <p id="result-probability-comment" class="prob-comment">-</p>
+                        </div>
+                    </div>
+
+                    <!-- プレイヤー割り当て結果 (ご主人様のご要望により、一旦コメントアウトで隠しております。復活させる際はこのコメントアウトを解除してください)
+                    <details class="card player-results-card settings-card">
+                        <summary class="settings-summary">
+                            <h3 class="card-subtitle" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">👥 ブキ割り当て結果</h3>
+                            <span class="toggle-icon">▼</span>
+                        </summary>
+                        <div class="settings-content" style="margin-top: 1rem;">
+                            <div id="player-weapons-grid" class="player-weapons-grid">
+                                [ここにプレイヤーごとの割り当てカードがJSで生成されます]
+                            </div>
+                        </div>
+                    </details>
+                    -->
+
+                    <!-- 予備ブキプール -->
+                    <div id="buffer-weapons-card" class="card buffer-weapons-card">
+                        <h3 class="card-subtitle">🎁 予備ブキリスト</h3>
+                        <div id="buffer-weapons-grid" class="buffer-weapons-grid">
+                            <!-- 予備ブキのバッジがJSで生成されます -->
+                        </div>
+                        <p class="buffer-tip">💡 ブキを持っていない方は、上記の予備ブキリスト内のブキ, または近い武器種と交換してください。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2026 ブキチハイ！</p>
+        <p class="credit">Powered by <a href="https://x.com/natsukino_co" target="_blank" rel="noopener noreferrer">なつきのこ (@natsukino_co)</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
