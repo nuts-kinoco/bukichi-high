@@ -683,11 +683,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 unifiedNominator = match[2];
                 
                 if (unifiedType === 'ブキ') {
-                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>ブキ</strong>を指定してくださいでし！<br>プレイヤーは選ばれたブキを持ってバトルに挑んでくださいでし！`;
-                    copyInstruction = `**${unifiedNominator}**さんはお好きな**ブキ**を指定してください。\nプレイヤーは選ばれたブキを持ってバトルに挑んでください！`;
+                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>ブキ</strong>を指定してくださいでし！<br>全プレイヤーは選ばれたブキを持ってバトルに挑んでくださいでし！`;
+                    copyInstruction = `**${unifiedNominator}**さんはお好きな**ブキ**を指定してください。\n全プレイヤーは選ばれたブキを持ってバトルに挑んでください！`;
                 } else {
-                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>${escapeHTML(unifiedType)}</strong>を指定してくださいでし！<br>プレイヤーは選ばれた${escapeHTML(unifiedType)}を持ったブキから好きな物を選んでくださいでし！`;
-                    copyInstruction = `**${unifiedNominator}**さんはお好きな**${unifiedType}**を指定してください。\nプレイヤーは選ばれた**${unifiedType}**を持ったブキから好きな物を選んでください！`;
+                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>${escapeHTML(unifiedType)}</strong>を指定してくださいでし！<br>全プレイヤーは選ばれた${escapeHTML(unifiedType)}を持ったブキから好きな物を選んでくださいでし！`;
+                    copyInstruction = `**${unifiedNominator}**さんはお好きな**${unifiedType}**を指定してください。\n全プレイヤーは選ばれた**${unifiedType}**を持ったブキから好きな物を選んでください！`;
                 }
             }
         }
