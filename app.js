@@ -655,11 +655,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 unifiedNominator = match[2];
                 
                 if (unifiedType === 'ブキ') {
-                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きなブキを<strong>指定してください</strong>でし！<br>プレイヤーは選ばれたブキを持ってバトルに挑んでくださいでし！`;
-                    copyInstruction = `**${unifiedNominator}**さんはお好きなブキを**指定してください**。\nプレイヤーは選ばれたブキを持ってバトルに挑んでください！`;
+                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>ブキ</strong>を<strong>指定してください</strong>でし！<br>プレイヤーは選ばれたブキを持ってバトルに挑んでくださいでし！`;
+                    copyInstruction = `**${unifiedNominator}**さんはお好きな**ブキ**を**指定してください**。\nプレイヤーは選ばれたブキを持ってバトルに挑んでください！`;
                 } else {
-                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな${escapeHTML(unifiedType)}を<strong>指定してください</strong>でし！<br>プレイヤーは選ばれた${escapeHTML(unifiedType)}を持ったブキから好きな物を選んでくださいでし！`;
-                    copyInstruction = `**${unifiedNominator}**さんはお好きな${unifiedType}を**指定してください**。\nプレイヤーは選ばれた${unifiedType}を持ったブキから好きな物を選んでください！`;
+                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>${escapeHTML(unifiedType)}</strong>を<strong>指定してください</strong>でし！<br>プレイヤーは選ばれた${escapeHTML(unifiedType)}を持ったブキから好きな物を選んでくださいでし！`;
+                    copyInstruction = `**${unifiedNominator}**さんはお好きな**${unifiedType}**を**指定してください**。\nプレイヤーは選ばれた**${unifiedType}**を持ったブキから好きな物を選んでください！`;
                 }
             }
         }
@@ -735,12 +735,10 @@ document.addEventListener('DOMContentLoaded', () => {
             copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         }
 
-        // 特殊ルールセクション（Discord上で「赤文字」で表示させるためのdiffコードブロックハックでし！）
+        // 特殊ルールセクション
         if (drawSpecialRuleCheckbox.checked && specialRule) {
             copyText += `**【特別指令：特殊ルール】**\n`;
-            copyText += `\`\`\`diff\n`;
-            copyText += `- 特殊ルール発生！: ${specialRule}\n`;
-            copyText += `\`\`\`\n`;
+            copyText += `__**特殊ルール発生！: ${specialRule}**__\n\n`;
             if (isUnifiedRule) {
                 copyText += `${copyInstruction}\n`;
             }
