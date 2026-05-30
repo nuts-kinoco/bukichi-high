@@ -456,10 +456,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 自分以外のプレイヤーからランダムに1人選ぶ
                 const candidates = players.filter(p => p !== player);
                 const nominator = candidates[Math.floor(Math.random() * candidates.length)];
+                
+                // 50%の確率で「指定」または「一番使っていないブキ」のバリエーションを決定しますわ！
+                const isLeastUsed = Math.random() < 0.5;
+                const russianType = isLeastUsed ? 'leastUsed' : 'specify';
+                const weaponName = isLeastUsed 
+                    ? `${nominator}さんが一番使っていないブキ`
+                    : `${nominator}さんが指定してください`;
+
                 weapon = {
-                    name: `${nominator}さんが指定してください`,
+                    name: weaponName,
                     category: '指定',
-                    nominator: nominator
+                    nominator: nominator,
+                    russianType: russianType
                 };
                 isRussianWeapon = true;
             }
@@ -700,7 +709,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     const item = document.createElement('div');
                     item.className = `player-result-row${assign.isRussian ? ' russian-active' : ''}`;
                     
-                    const displayWeaponName = assign.isRussian ? `<strong>${escapeHTML(assign.weapon.nominator)}</strong>さんが指定してください` : escapeHTML(assign.weapon.name);
+                    let displayWeaponName = escapeHTML(assign.weapon.name);
+                    if (assign.isRussian) {
+                        const nameBold = `<strong>${escapeHTML(assign.weapon.nominator)}</strong>`;
+                        if (assign.weapon.russianType === 'leastUsed') {
+                            displayWeaponName = `${nameBold}さんが一番使っていないブキ`;
+                        } else {
+                            displayWeaponName = `${nameBold}さんが指定してください`;
+                        }
+                    }
                     item.innerHTML = `
                         <span class="player-name">${escapeHTML(assign.player)}</span>
                         <span class="weapon-name${assign.isRussian ? ' russian-text' : ''}">
@@ -774,7 +791,11 @@ document.addEventListener('DOMContentLoaded', () => {
             copyText += `**【ブキ割り当てリスト】**\n`;
             playerAssignments.forEach(assign => {
                 if (assign.isRussian) {
-                    copyText += `${assign.player}: **${assign.weapon.nominator}**さんが指定してください\n`;
+                    if (assign.weapon.russianType === 'leastUsed') {
+                        copyText += `${assign.player}: **${assign.weapon.nominator}**さんが一番使っていないブキ\n`;
+                    } else {
+                        copyText += `${assign.player}: **${assign.weapon.nominator}**さんが指定してください\n`;
+                    }
                 } else {
                     copyText += `${assign.player}: ${assign.weapon.name} (${assign.weapon.category})\n`;
                 }
