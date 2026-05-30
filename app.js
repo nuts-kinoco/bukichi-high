@@ -628,7 +628,15 @@ document.addEventListener('DOMContentLoaded', () => {
             resultProbabilityComment.textContent = getBukichiComment(prob);
         } else {
             const inverse = Math.round(1.0 / prob);
-            const percentStr = (prob * 100).toFixed(8).replace(/\.?0+$/, '');
+            const rawPercent = prob * 100;
+            let percentStr = '';
+            
+            if (rawPercent < 0.00000001) {
+                percentStr = '< 0.00000001';
+            } else {
+                percentStr = rawPercent.toFixed(8).replace(/\.?0+$/, '');
+            }
+            
             resultProbabilityValue.textContent = `1 / ${inverse.toLocaleString()} (${percentStr}%)`;
             resultProbabilityComment.textContent = getBukichiComment(prob);
         }
