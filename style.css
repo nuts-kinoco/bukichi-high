@@ -941,16 +941,20 @@ body {
 
 /* --- 💥 Special Rule result card --- */
 .special-rule-info {
-    margin-top: 1rem;
-    border-top: 1px solid rgba(255,255,255,0.15);
-    padding-top: 0.8rem;
+    margin-top: 1.2rem;
+    border: 1px solid rgba(255, 69, 58, 0.3);
+    background: rgba(255, 69, 58, 0.06); /* ほんのり警告赤 */
+    padding: 1rem;
+    border-radius: 0.85rem;
     display: flex;
     flex-direction: column;
     animation: fadeIn 0.3s ease;
+    box-shadow: 0 4px 16px rgba(255, 69, 58, 0.05);
 }
 
 [data-theme="light"] .special-rule-info {
-    border-top: 1px solid rgba(0,0,0,0.06);
+    background: rgba(255, 69, 58, 0.03);
+    border: 1px solid rgba(255, 69, 58, 0.15);
 }
 
 /* 9. Footer styling */

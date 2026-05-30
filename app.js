@@ -635,7 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 特殊ルールの表示（特殊ルール発生！の警告表示を差し込みます）
         if (drawSpecialRuleCheckbox.checked && specialRule) {
             specialRuleInfoBlock.classList.remove('hidden');
-            resultSpecialRuleSpan.innerHTML = `<span style="color:#ff453a; font-weight:900;">🚨 特殊ルール発生！ 🚨</span><br>${escapeHTML(specialRule)}`;
+            resultSpecialRuleSpan.innerHTML = `<span style="color:#ff453a; font-weight:900; font-size:1.1rem; text-shadow: 0 0 8px rgba(255, 69, 58, 0.4);">特殊ルール発生！</span><br><strong style="font-size:1.2rem; color:var(--text-primary); margin-top:0.4rem; display:inline-block;">${escapeHTML(specialRule)}</strong>`;
         } else {
             specialRuleInfoBlock.classList.add('hidden');
         }
@@ -713,33 +713,41 @@ document.addEventListener('DOMContentLoaded', () => {
             if (bufferWeaponsCard) bufferWeaponsCard.classList.add('hidden');
         }
 
-        // 8. コピペ用テキストの自動生成（絵文字なし、プレーン、ブキチ語尾タイトル）
-        // タイトル部に確率の数値を括弧書きで自動付与（コピペ用はシンプルに数値のみ）
+        // 8. コピペ用テキストの自動生成（絵文字付き、美しい構造化、改行＆太字アジャスト！）
         let probSuffix = '';
         if (prob < 1.0) {
             const inverse = Math.round(1.0 / prob);
             probSuffix = ` (確率: 1 / ${inverse.toLocaleString()})`;
         }
-        let copyText = `ブキチハイ！ 抽選結果でし！${probSuffix}\n`;
-        if (drawRuleCheckbox.checked) {
-            if (rule.includes('さんが指定してください')) {
+        
+        let copyText = `ブキチハイ！ 抽選結果でし！${probSuffix}\n\n`;
+        copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        
+        // ルール・ステージセクション
+        if (drawRuleCheckbox.checked || drawStageCheckbox.checked) {
+            copyText += `**【ルール＆ステージ】**\n`;
+            if (drawRuleCheckbox.checked) {
                 copyText += `ルール: **${rule}**\n`;
-            } else {
-                copyText += `ルール: ${rule}\n`;
             }
-        }
-        if (drawStageCheckbox.checked) {
-            copyText += `ステージ: ${stage}\n`;
-        }
-        if (drawSpecialRuleCheckbox.checked && specialRule) {
-            copyText += `特殊ルール発生！: ${specialRule}\n`;
+            if (drawStageCheckbox.checked) {
+                copyText += `ステージ: **${stage}**\n`;
+            }
+            copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         }
 
-        if (isUnifiedRule) {
-            // 統一ルールの時は個別ブキとバッファを省略し、直接指示テキストを出力
-            copyText += `${copyInstruction}\n`;
-        } else {
-            copyText += `\n`;
+        // 特殊ルールセクション
+        if (drawSpecialRuleCheckbox.checked && specialRule) {
+            copyText += `**【特別指令：特殊ルール】**\n`;
+            copyText += `**特殊ルール発生！: ${specialRule}**\n\n`;
+            if (isUnifiedRule) {
+                copyText += `${copyInstruction}\n`;
+            }
+            copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        }
+
+        // プレイヤー＆バッファセクション（統一ルール時は個別ブキとバッファを省略）
+        if (!isUnifiedRule) {
+            copyText += `**【ブキ割り当てリスト】**\n`;
             playerAssignments.forEach(assign => {
                 if (assign.isRussian) {
                     copyText += `${assign.player}: **${assign.weapon.name}**\n`;
@@ -749,11 +757,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (bufferWeapons.length > 0) {
-                copyText += `\n予備ブキリスト:\n`;
+                copyText += `\n**【予備ブキリスト】**\n`;
                 bufferWeapons.forEach(weapon => {
                     copyText += `- ${weapon.name} (${weapon.category})\n`;
                 });
             }
+            copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         }
 
         copyTextarea.value = copyText;
