@@ -845,17 +845,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     username: 'ブキチ',
                     avatar_url: avatarUrl,
-                    content: text,
-                    embeds: [
-                        {
-                            author: {
-                                name: 'ブキチの自己紹介',
-                                icon_url: avatarUrl
-                            },
-                            description: '色んなブキを かわいがって 早くイカしたやつになるでし！([@natsukino_co](https://x.com/natsukino_co))',
-                            color: 16729914 // 鮮烈な警告ネオンレッド (#ff453a) の10進数表現でございますわ！
-                        }
-                    ]
+                    content: text
                 })
             });
 
