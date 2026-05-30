@@ -132,18 +132,19 @@
                         </div>
 
                         <!-- ブキロシアンルーレットモード -->
-                        <div class="checkbox-group">
+                        <div class="checkbox-group flex-row-between">
                             <label class="checkbox-container text-danger">
                                 <input type="checkbox" id="russian-weapon-roulette">
                                 <span class="checkmark checkmark-danger"></span>
                                 ブキロシアンルーレット
                                 <span class="help-icon" data-tooltip="設定した確率で、参加プレイヤーの中からランダムで最大1名が選ばれ、他の仲間からブキを指定（または一番使っていないブキを指示）されるスリリングなモードでし！">❓</span>
                             </label>
+                            <button type="button" id="russian-weapon-options-toggle-btn" class="expander-btn hidden" aria-label="詳細設定を開閉">▲</button>
                         </div>
 
                         <!-- ブキ指定の確率設定 (最初は非表示) -->
-                        <div id="russian-weapon-probability-group" class="option-group hidden">
-                            <label for="russian-weapon-probability" class="option-label">
+                        <div id="russian-weapon-probability-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
+                            <label for="russian-weapon-probability" class="option-label" style="margin-bottom: 0.6rem;">
                                 <span>指定ブキの発生確率</span>
                             </label>
                             <select id="russian-weapon-probability" class="select-input">
@@ -161,18 +162,19 @@
                         </div>
 
                         <!-- ルールロシアンルーレットモード -->
-                        <div class="checkbox-group">
+                        <div class="checkbox-group flex-row-between">
                             <label class="checkbox-container text-danger">
                                 <input type="checkbox" id="russian-rule-roulette">
                                 <span class="checkmark checkmark-danger"></span>
                                 ルールロシアンルーレット
                                 <span class="help-icon" data-tooltip="設定した確率で、対戦ルールがいずれかのプレイヤーによる指定になるでし！">❓</span>
                             </label>
+                            <button type="button" id="russian-rule-options-toggle-btn" class="expander-btn hidden" aria-label="詳細設定を開閉">▲</button>
                         </div>
 
                         <!-- ルール指定の確率設定 (最初は非表示) -->
-                        <div id="russian-rule-probability-group" class="option-group hidden">
-                            <label for="russian-rule-probability" class="option-label">
+                        <div id="russian-rule-probability-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
+                            <label for="russian-rule-probability" class="option-label" style="margin-bottom: 0.6rem;">
                                 <span>指定ルールの発生確率</span>
                             </label>
                             <select id="russian-rule-probability" class="select-input">
@@ -190,46 +192,50 @@
                         </div>
 
                         <!-- 特殊ルール抽選チェックボックス -->
-                        <div class="checkbox-group">
+                        <div class="checkbox-group flex-row-between">
                             <label class="checkbox-container">
                                 <input type="checkbox" id="draw-special-rule">
                                 <span class="checkmark"></span>
                                 特殊ルールをランダムで抽選する
                             </label>
+                            <button type="button" id="special-rule-options-toggle-btn" class="expander-btn hidden" aria-label="詳細設定を開閉">▲</button>
                         </div>
 
-                        <!-- 特殊ルール発生の確率設定 (最初は非表示) -->
-                        <div id="special-rule-probability-group" class="option-group hidden">
-                            <label for="special-rule-probability" class="option-label">
-                                <span>特殊ルールの発生確率</span>
-                            </label>
-                            <select id="special-rule-probability" class="select-input">
-                                <option value="0.1">10%</option>
-                                <option value="0.2">20%</option>
-                                <option value="0.3" selected>30%</option>
-                                <option value="0.4">40%</option>
-                                <option value="0.5">50%</option>
-                                <option value="0.6">60%</option>
-                                <option value="0.7">70%</option>
-                                <option value="0.8">80%</option>
-                                <option value="0.9">90%</option>
-                                <option value="1.0">100%</option>
-                            </select>
-                        </div>
-
-                        <!-- 特殊ルールの管理 (折りたたみ式) -->
-                        <details class="special-rules-manager" style="margin-top: 0.5rem; margin-bottom: 1.2rem;">
-                            <summary class="manager-summary">⚙️ 特殊ルールの編集・追加</summary>
-                            <div class="manager-content">
-                                <div class="add-rule-form">
-                                    <input type="text" id="new-rule-input" class="input-player" placeholder="新しい特殊ルールを入力">
-                                    <button type="button" id="add-rule-btn" class="btn btn-secondary">➕</button>
-                                </div>
-                                <ul id="special-rules-list" class="rules-list">
-                                    <!-- JSで動的に並びます -->
-                                </ul>
+                        <!-- 特殊ルール詳細設定グループ (最初は非表示) -->
+                        <div id="special-rule-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
+                            <!-- 特殊ルール発生の確率設定 -->
+                            <div id="special-rule-probability-group" class="option-group">
+                                <label for="special-rule-probability" class="option-label" style="margin-bottom: 0.6rem;">
+                                    <span>特殊ルールの発生確率</span>
+                                </label>
+                                <select id="special-rule-probability" class="select-input">
+                                    <option value="0.1">10%</option>
+                                    <option value="0.2">20%</option>
+                                    <option value="0.3" selected>30%</option>
+                                    <option value="0.4">40%</option>
+                                    <option value="0.5">50%</option>
+                                    <option value="0.6">60%</option>
+                                    <option value="0.7">70%</option>
+                                    <option value="0.8">80%</option>
+                                    <option value="0.9">90%</option>
+                                    <option value="1.0">100%</option>
+                                </select>
                             </div>
-                        </details>
+
+                            <!-- 特殊ルールの管理 (折りたたみ式) -->
+                            <details class="special-rules-manager" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                                <summary class="manager-summary">⚙️ 特殊ルールの編集・追加</summary>
+                                <div class="manager-content">
+                                    <div class="add-rule-form">
+                                        <input type="text" id="new-rule-input" class="input-player" placeholder="新しい特殊ルールを入力">
+                                        <button type="button" id="add-rule-btn" class="btn btn-secondary">➕</button>
+                                    </div>
+                                    <ul id="special-rules-list" class="rules-list">
+                                        <!-- JSで動的に並びます -->
+                                    </ul>
+                                </div>
+                            </details>
+                        </div>
 
                         <!-- Discord連携設定 -->
                         <div class="option-group" style="margin-top: 1.2rem; border-top: 1px dashed var(--border-card); padding-top: 1.2rem;">

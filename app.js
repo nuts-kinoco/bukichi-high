@@ -11,15 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const bufferValBadge = document.getElementById('buffer-val');
     const drawRuleCheckbox = document.getElementById('draw-rule');
     const drawStageCheckbox = document.getElementById('draw-stage');
+    
     const russianWeaponRouletteCheckbox = document.getElementById('russian-weapon-roulette');
     const russianWeaponProbabilitySelect = document.getElementById('russian-weapon-probability');
     const russianWeaponProbabilityGroup = document.getElementById('russian-weapon-probability-group');
+    const russianWeaponOptionsToggleBtn = document.getElementById('russian-weapon-options-toggle-btn');
+    
     const russianRuleRouletteCheckbox = document.getElementById('russian-rule-roulette');
     const russianRuleProbabilitySelect = document.getElementById('russian-rule-probability');
     const russianRuleProbabilityGroup = document.getElementById('russian-rule-probability-group');
+    const russianRuleOptionsToggleBtn = document.getElementById('russian-rule-options-toggle-btn');
+    
     const drawSpecialRuleCheckbox = document.getElementById('draw-special-rule');
     const specialRuleProbabilitySelect = document.getElementById('special-rule-probability');
     const specialRuleProbabilityGroup = document.getElementById('special-rule-probability-group');
+    const specialRuleOptionsGroup = document.getElementById('special-rule-options-group');
+    const specialRuleOptionsToggleBtn = document.getElementById('special-rule-options-toggle-btn');
     const specialRuleInfoBlock = document.getElementById('special-rule-info');
     const resultSpecialRuleSpan = document.getElementById('result-special-rule');
     const resultProbabilityValue = document.getElementById('result-probability-value');
@@ -292,29 +299,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ロシアンルーレットトグルの表示連動
+    // ロシアンルーレットトグルの表示連動＆エキスパンダー制御
     russianWeaponRouletteCheckbox.addEventListener('change', () => {
         if (russianWeaponRouletteCheckbox.checked) {
             russianWeaponProbabilityGroup.classList.remove('hidden');
+            russianWeaponOptionsToggleBtn.classList.remove('hidden');
+            russianWeaponOptionsToggleBtn.classList.remove('collapsed');
         } else {
             russianWeaponProbabilityGroup.classList.add('hidden');
+            russianWeaponOptionsToggleBtn.classList.add('hidden');
         }
     });
 
     russianRuleRouletteCheckbox.addEventListener('change', () => {
         if (russianRuleRouletteCheckbox.checked) {
             russianRuleProbabilityGroup.classList.remove('hidden');
+            russianRuleOptionsToggleBtn.classList.remove('hidden');
+            russianRuleOptionsToggleBtn.classList.remove('collapsed');
         } else {
             russianRuleProbabilityGroup.classList.add('hidden');
+            russianRuleOptionsToggleBtn.classList.add('hidden');
         }
     });
 
     drawSpecialRuleCheckbox.addEventListener('change', () => {
         if (drawSpecialRuleCheckbox.checked) {
-            specialRuleProbabilityGroup.classList.remove('hidden');
+            specialRuleOptionsGroup.classList.remove('hidden');
+            specialRuleOptionsToggleBtn.classList.remove('hidden');
+            specialRuleOptionsToggleBtn.classList.remove('collapsed');
         } else {
-            specialRuleProbabilityGroup.classList.add('hidden');
+            specialRuleOptionsGroup.classList.add('hidden');
+            specialRuleOptionsToggleBtn.classList.add('hidden');
         }
+    });
+
+    // 各エキスパンダーボタンによる詳細の開閉制御
+    russianWeaponOptionsToggleBtn.addEventListener('click', () => {
+        russianWeaponProbabilityGroup.classList.toggle('hidden');
+        russianWeaponOptionsToggleBtn.classList.toggle('collapsed');
+    });
+
+    russianRuleOptionsToggleBtn.addEventListener('click', () => {
+        russianRuleProbabilityGroup.classList.toggle('hidden');
+        russianRuleOptionsToggleBtn.classList.toggle('collapsed');
+    });
+
+    specialRuleOptionsToggleBtn.addEventListener('click', () => {
+        specialRuleOptionsGroup.classList.toggle('hidden');
+        specialRuleOptionsToggleBtn.classList.toggle('collapsed');
     });
 
     // --- 👥 3. Dynamic Player Management ---
