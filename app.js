@@ -507,22 +507,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const nominator = players[Math.floor(Math.random() * players.length)];
                 drawnRule = `${nominator}さんが指定してください`;
             } else {
-                // 通常抽選 ＆ ルールロスト機能の適用
-                const isRuleLostEnabled = document.getElementById('rule-lost-toggle').checked;
-                if (isRuleLostEnabled) {
-                    let unplayedRules = availableRules.filter(r => !playedRules.includes(r));
-                    
-                    // 全種類ループしたら、履歴を自動リセットして再度ループ開始するでし！
-                    if (unplayedRules.length === 0) {
-                        playedRules = [];
-                        unplayedRules = availableRules;
-                    }
-                    
-                    drawnRule = unplayedRules[Math.floor(Math.random() * unplayedRules.length)];
-                    playedRules.push(drawnRule);
-                } else {
-                    drawnRule = availableRules[Math.floor(Math.random() * availableRules.length)];
+                // 通常抽選 ＆ ルールロスト機能の適用（常に有効）
+                let unplayedRules = availableRules.filter(r => !playedRules.includes(r));
+                
+                // 全種類ループしたら、履歴を自動リセットして再度ループ開始するでし！
+                if (unplayedRules.length === 0) {
+                    playedRules = [];
+                    unplayedRules = availableRules;
                 }
+                
+                drawnRule = unplayedRules[Math.floor(Math.random() * unplayedRules.length)];
+                playedRules.push(drawnRule);
             }
         }
         
@@ -533,22 +528,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 availableStages = [...stageList]; // セーフティフォールバック
             }
 
-            // 通常抽選 ＆ ステージロスト機能の適用
-            const isStageLostEnabled = document.getElementById('stage-lost-toggle').checked;
-            if (isStageLostEnabled) {
-                let unplayedStages = availableStages.filter(s => !playedStages.includes(s));
-                
-                // 全種類ループしたら、履歴を自動リセットして再度ループ開始するでし！
-                if (unplayedStages.length === 0) {
-                    playedStages = [];
-                    unplayedStages = availableStages;
-                }
-                
-                drawnStage = unplayedStages[Math.floor(Math.random() * unplayedStages.length)];
-                playedStages.push(drawnStage);
-            } else {
-                drawnStage = availableStages[Math.floor(Math.random() * availableStages.length)];
+            // 通常抽選 ＆ ステージロスト機能の適用（常に有効）
+            let unplayedStages = availableStages.filter(s => !playedStages.includes(s));
+            
+            // 全種類ループしたら、履歴を自動リセットして再度ループ開始するでし！
+            if (unplayedStages.length === 0) {
+                playedStages = [];
+                unplayedStages = availableStages;
             }
+            
+            drawnStage = unplayedStages[Math.floor(Math.random() * unplayedStages.length)];
+            playedStages.push(drawnStage);
         }
 
         // 5.1 特殊ルールのランダム抽選 (プランB: 無効化されたものを除外したリストから確率で抽選します)
@@ -973,8 +963,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 🎲 Advanced Options Initialization & Renderers ---
     const ruleOptionsGroup = document.getElementById('rule-options-group');
     const stageOptionsGroup = document.getElementById('stage-options-group');
-    const ruleLostToggle = document.getElementById('rule-lost-toggle');
-    const stageLostToggle = document.getElementById('stage-lost-toggle');
     const ruleSelectListContainer = document.getElementById('rule-select-list');
     const stageSelectListContainer = document.getElementById('stage-select-list');
 
@@ -1057,13 +1045,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // ロストスイッチの変更監視
-    ruleLostToggle.addEventListener('change', () => {
-        playedRules = [];
-    });
-    stageLostToggle.addEventListener('change', () => {
-        playedStages = [];
-    });
+    // (ロストトグルチェックボックス廃止のため監視コードは削除されましたわ)
 
     // --- 🏁 9. Initialization ---
     initTheme();
