@@ -458,7 +458,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const nominator = candidates[Math.floor(Math.random() * candidates.length)];
                 weapon = {
                     name: `${nominator}さんが指定してください`,
-                    category: '指定'
+                    category: '指定',
+                    nominator: nominator
                 };
                 isRussianWeapon = true;
             }
@@ -665,11 +666,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 unifiedNominator = match[2];
                 
                 if (unifiedType === 'ブキ') {
-                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>ブキ</strong>を<strong>指定してください</strong>でし！<br>プレイヤーは選ばれたブキを持ってバトルに挑んでくださいでし！`;
-                    copyInstruction = `**${unifiedNominator}**さんはお好きな**ブキ**を**指定してください**。\nプレイヤーは選ばれたブキを持ってバトルに挑んでください！`;
+                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>ブキ</strong>を指定してくださいでし！<br>プレイヤーは選ばれたブキを持ってバトルに挑んでくださいでし！`;
+                    copyInstruction = `**${unifiedNominator}**さんはお好きな**ブキ**を指定してください。\nプレイヤーは選ばれたブキを持ってバトルに挑んでください！`;
                 } else {
-                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>${escapeHTML(unifiedType)}</strong>を<strong>指定してください</strong>でし！<br>プレイヤーは選ばれた${escapeHTML(unifiedType)}を持ったブキから好きな物を選んでくださいでし！`;
-                    copyInstruction = `**${unifiedNominator}**さんはお好きな**${unifiedType}**を**指定してください**。\nプレイヤーは選ばれた**${unifiedType}**を持ったブキから好きな物を選んでください！`;
+                    unifiedInstruction = `<strong>${escapeHTML(unifiedNominator)}さん</strong>はお好きな<strong>${escapeHTML(unifiedType)}</strong>を指定してくださいでし！<br>プレイヤーは選ばれた${escapeHTML(unifiedType)}を持ったブキから好きな物を選んでくださいでし！`;
+                    copyInstruction = `**${unifiedNominator}**さんはお好きな**${unifiedType}**を指定してください。\nプレイヤーは選ばれた**${unifiedType}**を持ったブキから好きな物を選んでください！`;
                 }
             }
         }
@@ -691,7 +692,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const item = document.createElement('div');
                     item.className = `player-result-row${assign.isRussian ? ' russian-active' : ''}`;
                     
-                    const displayWeaponName = assign.isRussian ? `<strong>${escapeHTML(assign.weapon.name)}</strong>` : escapeHTML(assign.weapon.name);
+                    const displayWeaponName = assign.isRussian ? `<strong>${escapeHTML(assign.weapon.nominator)}</strong>さんが指定してください` : escapeHTML(assign.weapon.name);
                     item.innerHTML = `
                         <span class="player-name">${escapeHTML(assign.player)}</span>
                         <span class="weapon-name${assign.isRussian ? ' russian-text' : ''}">
@@ -737,7 +738,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (drawRuleCheckbox.checked || drawStageCheckbox.checked) {
             copyText += `**【ルール＆ステージ】**\n`;
             if (drawRuleCheckbox.checked) {
-                copyText += `ルール: **${rule}**\n`;
+                if (rule.includes('さんが指定してください')) {
+                    const nominator = rule.replace('さんが指定してください', '');
+                    copyText += `ルール: **${nominator}**さんが指定してください\n`;
+                } else {
+                    copyText += `ルール: **${rule}**\n`;
+                }
             }
             if (drawStageCheckbox.checked) {
                 copyText += `ステージ: **${stage}**\n`;
@@ -760,7 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
             copyText += `**【ブキ割り当てリスト】**\n`;
             playerAssignments.forEach(assign => {
                 if (assign.isRussian) {
-                    copyText += `${assign.player}: **${assign.weapon.name}**\n`;
+                    copyText += `${assign.player}: **${assign.weapon.nominator}**さんが指定してください\n`;
                 } else {
                     copyText += `${assign.player}: ${assign.weapon.name} (${assign.weapon.category})\n`;
                 }
