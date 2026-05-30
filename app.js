@@ -735,10 +735,12 @@ document.addEventListener('DOMContentLoaded', () => {
             copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         }
 
-        // 特殊ルールセクション
+        // 特殊ルールセクション（Discord上で「赤文字」で表示させるためのdiffコードブロックハックでし！）
         if (drawSpecialRuleCheckbox.checked && specialRule) {
             copyText += `**【特別指令：特殊ルール】**\n`;
-            copyText += `**特殊ルール発生！: ${specialRule}**\n\n`;
+            copyText += `\`\`\`diff\n`;
+            copyText += `- 特殊ルール発生！: ${specialRule}\n`;
+            copyText += `\`\`\`\n`;
             if (isUnifiedRule) {
                 copyText += `${copyInstruction}\n`;
             }
