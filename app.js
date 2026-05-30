@@ -778,8 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 特殊ルールセクション
         if (drawSpecialRuleCheckbox.checked && specialRule) {
-            copyText += `**【特別指令：特殊ルール】**\n`;
-            copyText += `__**特殊ルール発生！: ${specialRule}**__\n\n`;
+            copyText += `**【特殊ルール】** __**${specialRule}**__\n`;
             if (isUnifiedRule) {
                 copyText += `${copyInstruction}\n`;
             }
