@@ -775,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (bufferWeapons.length > 0) {
                 copyText += `\n**【予備ブキリスト】**\n`;
                 bufferWeapons.forEach(weapon => {
-                    copyText += `- ${weapon.name} (${weapon.category})\n`;
+                    copyText += `- ${weapon.name} (または${weapon.category}種)\n`;
                 });
             }
             copyText += `━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
