@@ -110,11 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // ヘッダー行 (カテゴリー,ブキ名) を除いたデータ行をパース
             const parsedWeapons = [];
             for (let i = 1; i < lines.length; i++) {
-                const parts = lines[i].split(',');
+                // 行全体のダブルクォーテーションを取り除く安全防壁
+                const cleanLine = lines[i].replace(/^"|"$/g, '').trim();
+                const parts = cleanLine.split(',');
                 if (parts.length >= 2) {
                     parsedWeapons.push({
-                        category: parts[0].trim(),
-                        name: parts[1].trim()
+                        category: parts[0].trim().replace(/^"|"$/g, ''),
+                        name: parts[1].trim().replace(/^"|"$/g, '')
                     });
                 }
             }
