@@ -100,9 +100,8 @@
 
                         <!-- ルール詳細設定グループ (最初は非表示) -->
                         <div id="rule-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
-                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>抽選するルール（チェックを外したルールは除外されるでし）:</span>
-                                <span class="help-icon" data-tooltip="1度プレイしたルールを抽選から外すでし！全種類ループしたら自動ですべてのルールが抽選対象にリセットされるでし！">❓</span>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 600;">
+                                抽選するルール（チェックを外したルールは除外でし）:
                             </div>
                             <div class="inner-checkbox-list" id="rule-select-list">
                                 <!-- JSで動的に並びます -->
@@ -120,9 +119,8 @@
 
                         <!-- ステージ詳細設定グループ (最初は非表示) -->
                         <div id="stage-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
-                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>抽選するステージ（チェックを外したステージは除外されるでし）:</span>
-                                <span class="help-icon" data-tooltip="1度プレイしたステージを抽選から外すでし！全種類ループしたら自動ですべてのステージが抽選対象にリセットされるでし！">❓</span>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 600;">
+                                抽選するステージ（チェックを外したステージは除外でし）:
                             </div>
                             <div class="stage-scroll-container" id="stage-select-list">
                                 <!-- JSで動的に並びます -->
@@ -240,7 +238,7 @@
                             <label for="discord-webhook-url" class="option-label">
                                 <span>💬 Discord Webhook URL</span>
                             </label>
-                            <input type="password" id="discord-webhook-url" class="input-player" placeholder="https://discord.com/api/webhooks/..." style="font-family: monospace; font-size: 0.8rem;">
+                            <input type="password" id="discord-webhook-url" class="input-player" placeholder="https://discord.com/api/webhooks/..." style="font-family: monospace; font-size: 0.8rem; width: 100%;">
                             <p class="option-desc">設定すると、抽選結果を直接Discordの指定チャンネルに送信できるようになります。（誤爆防止のため、URLは保存されないでし！）</p>
                         </div>
                     </div>
