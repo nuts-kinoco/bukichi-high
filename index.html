@@ -100,11 +100,10 @@
 
                         <!-- ルール詳細設定グループ (最初は非表示) -->
                         <div id="rule-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
-                            <div class="lost-info-label text-accent" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>🔄 ルールロスト機能有効</span>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+                                <span>抽選するルール（チェックを外したルールは除外されるでし）:</span>
                                 <span class="help-icon" data-tooltip="1度プレイしたルールを抽選から外すでし！全種類ループしたら自動ですべてのルールが抽選対象にリセットされるでし！">❓</span>
                             </div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">抽選するルール（チェックを外したルールは除外されるでし）:</div>
                             <div class="inner-checkbox-list" id="rule-select-list">
                                 <!-- JSで動的に並びます -->
                             </div>
@@ -121,11 +120,10 @@
 
                         <!-- ステージ詳細設定グループ (最初は非表示) -->
                         <div id="stage-options-group" class="option-group hidden" style="margin-left: 1.5rem; margin-top: -0.5rem; margin-bottom: 1rem; padding-left: 0.8rem; border-left: 2px solid var(--border-card);">
-                            <div class="lost-info-label text-accent" style="font-size: 0.8rem; font-weight: bold; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.25rem;">
-                                <span>🔄 ステージロスト機能有効</span>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+                                <span>抽選するステージ（チェックを外したステージは除外されるでし）:</span>
                                 <span class="help-icon" data-tooltip="1度プレイしたステージを抽選から外すでし！全種類ループしたら自動ですべてのステージが抽選対象にリセットされるでし！">❓</span>
                             </div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">抽選するステージ（チェックを外したステージは除外されるでし）:</div>
                             <div class="stage-scroll-container" id="stage-select-list">
                                 <!-- JSで動的に並びます -->
                             </div>
